@@ -1,0 +1,25 @@
+onst correctOrder = ["doc-2", "doc-4", "doc-1", "doc-5", "doc-3"];
+let userOrder = [];
+
+document.querySelectorAll('.doc-img').forEach(img => {
+    img.addEventListener('click', () => {
+        userOrder.push(img.id);
+        if (userOrder.length === correctOrder.length) {
+            if (arraysEqual(userOrder, correctOrder)) {
+                document.getElementById('unlock-message').style.display = 'block';
+                playUnlockSound();
+            } else {
+                userOrder = [];
+                alert("Sequence incorrect. Try again.");
+            }
+        }
+    });
+});
+
+function arraysEqual(a, b) {
+    return a.length === b.length && a.every((val, index) => val === b[index]);
+}
+
+function playUnlockSound() {
+    const audio = new Audio('audio/unlock.mp3');
+    audio.play();
