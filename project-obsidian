@@ -134,3 +134,185 @@ body {
   background: black;
   color: black;
   text-shadow: 0 0 5px #fff;
+import os
+from zipfile import ZipFile
+
+# Basis-Verzeichnisse und Dateien
+base_dir = "obsidian_arg_expanded"
+pages = ["index.html", "terminal.html", "archive.html", "case.html", "contact.html"]
+subdirs = ["css", "js", "img", "audio"]
+
+os.makedirs(base_dir, exist_ok=True)
+for subdir in subdirs:
+    os.makedirs(os.path.join(base_dir, subdir), exist_ok=True)
+
+# HTML-Inhalte
+html_templates = {
+    "index.html": """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Project OBSIDIAN</title>
+<link rel="stylesheet" href="css/style.css" />
+<script src="js/glitch.js" defer></script>
+</head>
+<body class="glitch-bg">
+<div class="glitch-title">PROJECT: OBSIDIAN</div>
+<p class="intro-text">Initiating secure uplink... <span class="dotdotdot"></span></p>
+<a href="terminal.html" class="enter-link">[ ENTER TERMINAL ]</a>
+</body>
+</html>
+""",
+    "terminal.html": """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Terminal Access</title>
+<link rel="stylesheet" href="css/style.css" />
+<script src="js/terminal.js" defer></script>
+</head>
+<body class="terminal-bg">
+<pre id="terminal">
+Connecting to OBSIDIAN Core...
+Decrypting Secure Channels...
+WARNING: Anomaly Detected
+FILE-004: [ERROR: Subject-Delta escaped containment]
+Type 'access archives' to continue.
+</pre>
+<a href="archive.html" class="enter-link">[ VIEW ARCHIVES ]</a>
+</body>
+</html>
+""",
+    "archive.html": """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Archives</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="archive-bg">
+<h1>ARCHIVAL DOCUMENTS</h1>
+<div class="doc redacted">MEMO 77 - "Subject-Delta shows nonhuman neural signatures. Immediate containment breach risk."</div>
+<div class="doc redacted">SEC.LOG#1184 - "Video surveillance of Wing C: Footage corrupted after unidentified shadow event."</div>
+<img src="img/redacted_file.png" alt="Classified Document" class="classified-img" />
+<a href="case.html" class="enter-link">[ VIEW CASE FILE DELTA ]</a>
+</body>
+</html>
+""",
+    "case.html": """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Case File: Delta</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="case-bg">
+<h1>CASE FILE: SUBJECT DELTA</h1>
+<p>Status: Missing</p>
+<p>Observation: Causes visual corruption in recorded media. Lethality Level: Unknown.</p>
+<p>Note: Do not engage. Notify OBSIDIAN Control immediately upon sighting.</p>
+<a href="contact.html" class="enter-link">[ REPORT SIGHTING ]</a>
+</body>
+</html>
+""",
+    "contact.html": """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Report Anomaly</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="contact-bg">
+<h1>REPORT A SIGHTING</h1>
+<form class="fake-form">
+  <input type="text" placeholder="Subject ID" />
+  <textarea placeholder="Details of the encounter"></textarea>
+  <button type="submit">Transmit</button>
+</form>
+<a href="index.html" class="enter-link">[ RETURN HOME ]</a>
+</body>
+</html>
+"""
+}
+
+# CSS
+css_content = """
+body {
+  background: black;
+  color: #00ffcc;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 2rem;
+}
+.glitch-title {
+  font-size: 2rem;
+  color: red;
+  animation: glitch 1s infinite;
+}
+.enter-link {
+  display: block;
+  margin-top: 2rem;
+  color: lime;
+  text-decoration: none;
+}
+.doc.redacted {
+  background: black;
+  color: black;
+  text-shadow: 0 0 5px red;
+  padding: 10px;
+  margin: 1rem 0;
+}
+.classified-img {
+  width: 80%;
+  filter: grayscale(100%) blur(2px);
+}
+@keyframes glitch {
+  0% { text-shadow: 2px 2px red; }
+  50% { text-shadow: -2px -2px blue; }
+  100% { text-shadow: 2px 2px red; }
+}
+"""
+
+# Terminal-Simulation JS
+terminal_js = """
+const terminal = document.getElementById('terminal');
+let command = '> access archives';
+let index = 0;
+function typeCommand() {
+    if (index < command.length) {
+        terminal.textContent += command[index];
+        index++;
+        setTimeout(typeCommand, 100);
+    }
+}
+setTimeout(typeCommand, 2000);
+"""
+
+# Glitch Effekt JS
+glitch_js = """
+const dots = document.querySelector('.dotdotdot');
+setInterval(() => {
+    dots.textContent += '.';
+    if (dots.textContent.length > 5) dots.textContent = '';
+}, 500);
+"""
+
+# Dateien schreiben
+for page, content in html_templates.items():
+    with open(os.path.join(base_dir, page), "w") as f:
+        f.write(content)
+
+with open(os.path.join(base_dir, "css/style.css"), "w") as f:
+    f.write(css_content)
+
+with open(os.path.join(base_dir, "js/terminal.js"), "w") as f:
+    f.write(terminal_js)
+
+with open(os.path.join(base_dir, "js/glitch.js"), "w") as f:
+    f.write(glitch_js)
+
+# Paketieren
+with ZipFile(base_dir + ".zip", "w") as zipf:
+    for foldername, subfolders, filenames in os.walk(base_dir):
+        for filename in filenames:
+            filepath = os.path.join(foldername, filename)
+            zipf.write(filepath, os.path.relpath(filepath, base_dir))
