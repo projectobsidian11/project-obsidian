@@ -2,141 +2,43 @@ import os
 from zipfile import ZipFile
 
 # Basis-Verzeichnisse und Dateien
-base_dir = "obsidian_arg_expanded"
-pages = ["index.html", "terminal.html", "archive.html", "case.html", "contact.html"]
+base_dir = "obsidian_arg_secret"
+pages = ["index.html", "terminal.html", "archive.html", "case.html", "contact.html", "obsidian_secret.html"]
 subdirs = ["css", "js", "img", "audio"]
 
+# Verzeichnisse erstellen
 os.makedirs(base_dir, exist_ok=True)
 for subdir in subdirs:
     os.makedirs(os.path.join(base_dir, subdir), exist_ok=True)
 
 # HTML-Inhalte
-html_templates = {
-    "index.html": """<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Project OBSIDIAN</title>
-<link rel="stylesheet" href="css/style.css" />
-<script src="js/glitch.js" defer></script>
-</head>
-<body class="glitch-bg">
-<div class="glitch-title">PROJECT: OBSIDIAN</div>
-<p class="intro-text">Initiating secure uplink... <span class="dotdotdot"></span></p>
-<a href="terminal.html" class="enter-link">[ ENTER TERMINAL ]</a>
-</body>
-</html>
-""",
-    "terminal.html": """<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Terminal Access</title>
-<link rel="stylesheet" href="css/style.css" />
-<script src="js/terminal.js" defer></script>
-</head>
-<body class="terminal-bg">
-<pre id="terminal">
-Connecting to OBSIDIAN Core...
-Decrypting Secure Channels...
-WARNING: Anomaly Detected
-FILE-004: [ERROR: Subject-Delta escaped containment]
-Type 'access archives' to continue.
-</pre>
-<a href="archive.html" class="enter-link">[ VIEW ARCHIVES ]</a>
-</body>
-</html>
-""",
-    "archive.html": """<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Archives</title>
-<link rel="stylesheet" href="css/style.css" />
-</head>
-<body class="archive-bg">
-<h1>ARCHIVAL DOCUMENTS</h1>
-<div class="doc redacted">MEMO 77 - "Subject-Delta shows nonhuman neural signatures. Immediate containment breach risk."</div>
-<div class="doc redacted">SEC.LOG#1184 - "Video surveillance of Wing C: Footage corrupted after unidentified shadow event."</div>
-<img src="img/redacted_file.png" alt="Classified Document" class="classified-img" />
-<a href="case.html" class="enter-link">[ VIEW CASE FILE DELTA ]</a>
-</body>
-</html>
-""",
-    "case.html": """<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Case File: Delta</title>
-<link rel="stylesheet" href="css/style.css" />
-</head>
-<body class="case-bg">
-<h1>CASE FILE: SUBJECT DELTA</h1>
-<p>Status: Missing</p>
-<p>Observation: Causes visual corruption in recorded media. Lethality Level: Unknown.</p>
-<p>Note: Do not engage. Notify OBSIDIAN Control immediately upon sighting.</p>
-<a href="contact.html" class="enter-link">[ REPORT SIGHTING ]</a>
-</body>
-</html>
-""",
-    "contact.html": """<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Report Anomaly</title>
-<link rel="stylesheet" href="css/style.css" />
-</head>
-<body class="contact-bg">
-<h1>REPORT A SIGHTING</h1>
-<form class="fake-form">
-  <input type="text" placeholder="Subject ID" />
-  <textarea placeholder="Details of the encounter"></textarea>
-  <button type="submit">Transmit</button>
-</form>
-<a href="index.html" class="enter-link">[ RETURN HOME ]</a>
-</body>
-</html>
-"""
+templates = {
+    "index.html": """<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Project OBSIDIAN</title><link rel='stylesheet' href='css/style.css'><script src='js/glitch.js' defer></script></head><body class='glitch-bg'><div class='glitch-title'>PROJECT: OBSIDIAN</div><p class='intro-text'>Initiating secure uplink... <span class='dotdotdot'></span></p><a href='terminal.html' class='enter-link'>[ ENTER TERMINAL ]</a></body></html>""",
+
+    "terminal.html": """<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Terminal Access</title><link rel='stylesheet' href='css/style.css'><script src='js/terminal.js' defer></script></head><body class='terminal-bg'><pre id='terminal'>Connecting to OBSIDIAN Core...\nDecrypting Secure Channels...\nWARNING: Anomaly Detected\nFILE-004: [ERROR: Subject-Delta escaped containment]\nType 'access archives' to continue.</pre><a href='archive.html' class='enter-link'>[ VIEW ARCHIVES ]</a></body></html>""",
+
+    "archive.html": """<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Archives</title><link rel='stylesheet' href='css/style.css'><script src='js/archive.js' defer></script></head><body class='archive-bg'><h1>ARCHIVAL DOCUMENTS</h1><div class='archive-gallery'><img src='img/doc1.png' class='doc-img' id='doc-1' alt='Document 1'><img src='img/doc2.png' class='doc-img' id='doc-2' alt='Document 2'><img src='img/doc3.png' class='doc-img' id='doc-3' alt='Document 3'><img src='img/doc4.png' class='doc-img' id='doc-4' alt='Document 4'><img src='img/doc5.png' class='doc-img' id='doc-5' alt='Document 5'></div><p id='unlock-message' style='display:none;'>Access Unlocked: <a href='obsidian_secret.html'>[ ENTER SECURE FILES ]</a></p><a href='case.html' class='enter-link'>[ VIEW CASE FILE DELTA ]</a></body></html>""",
+
+    "case.html": """<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Case File: Delta</title><link rel='stylesheet' href='css/style.css'></head><body class='case-bg'><h1>CASE FILE: SUBJECT DELTA</h1><p>Status: Missing</p><p>Observation: Causes visual corruption in recorded media. Lethality Level: Unknown.</p><p>Note: Do not engage. Notify OBSIDIAN Control immediately upon sighting.</p><a href='contact.html' class='enter-link'>[ REPORT SIGHTING ]</a></body></html>""",
+
+    "contact.html": """<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Report Anomaly</title><link rel='stylesheet' href='css/style.css'></head><body class='contact-bg'><h1>REPORT A SIGHTING</h1><form class='fake-form'><input type='text' placeholder='Subject ID' /><textarea placeholder='Details of the encounter'></textarea><button type='submit'>Transmit</button></form><a href='index.html' class='enter-link'>[ RETURN HOME ]</a></body></html>""",
+
+    "obsidian_secret.html": """<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Secure Access Granted</title><link rel='stylesheet' href='css/style.css'></head><body class='secret-bg'><h1>ACCESS GRANTED</h1><p>You have uncovered a fragment of OBSIDIAN's secret files...</p><p>Further instructions will follow. Stay alert.</p><a href='index.html' class='enter-link'>[ RETURN TO MAIN TERMINAL ]</a></body></html>"""
 }
 
 # CSS
 css_content = """
-body {
-  background: black;
-  color: #00ffcc;
-  font-family: 'Courier New', Courier, monospace;
-  padding: 2rem;
-}
-.glitch-title {
-  font-size: 2rem;
-  color: red;
-  animation: glitch 1s infinite;
-}
-.enter-link {
-  display: block;
-  margin-top: 2rem;
-  color: lime;
-  text-decoration: none;
-}
-.doc.redacted {
-  background: black;
-  color: black;
-  text-shadow: 0 0 5px red;
-  padding: 10px;
-  margin: 1rem 0;
-}
-.classified-img {
-  width: 80%;
-  filter: grayscale(100%) blur(2px);
-}
-@keyframes glitch {
-  0% { text-shadow: 2px 2px red; }
-  50% { text-shadow: -2px -2px blue; }
-  100% { text-shadow: 2px 2px red; }
-}
+body { background: black; color: #00ffcc; font-family: 'Courier New', Courier, monospace; padding: 2rem; }
+.glitch-title { font-size: 2rem; color: red; animation: glitch 1s infinite; }
+.enter-link { display: block; margin-top: 2rem; color: lime; text-decoration: none; }
+.archive-gallery { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+.doc-img { width: 100px; filter: grayscale(100%) blur(1px); cursor: pointer; transition: 0.3s; }
+.doc-img:hover { filter: none; }
+@keyframes glitch { 0% { text-shadow: 2px 2px red; } 50% { text-shadow: -2px -2px blue; } 100% { text-shadow: 2px 2px red; } }
+.secret-bg { background: linear-gradient(black, #330000); color: crimson; }
 """
 
-# Terminal-Simulation JS
+# JavaScript
 terminal_js = """
 const terminal = document.getElementById('terminal');
 let command = '> access archives';
@@ -151,7 +53,6 @@ function typeCommand() {
 setTimeout(typeCommand, 2000);
 """
 
-# Glitch Effekt JS
 glitch_js = """
 const dots = document.querySelector('.dotdotdot');
 setInterval(() => {
@@ -160,9 +61,38 @@ setInterval(() => {
 }, 500);
 """
 
+archive_js = """
+const correctOrder = ["doc-2", "doc-4", "doc-1", "doc-5", "doc-3"];
+let userOrder = [];
+
+document.querySelectorAll('.doc-img').forEach(img => {
+    img.addEventListener('click', () => {
+        userOrder.push(img.id);
+        if (userOrder.length === correctOrder.length) {
+            if (arraysEqual(userOrder, correctOrder)) {
+                document.getElementById('unlock-message').style.display = 'block';
+                playUnlockSound();
+            } else {
+                userOrder = [];
+                alert("Sequence incorrect. Try again.");
+            }
+        }
+    });
+});
+
+function arraysEqual(a, b) {
+    return a.length === b.length && a.every((val, index) => val === b[index]);
+}
+
+function playUnlockSound() {
+    const audio = new Audio('audio/unlock.mp3');
+    audio.play();
+}
+"""
+
 # Dateien schreiben
-for page, content in html_templates.items():
-    with open(os.path.join(base_dir, page), "w") as f:
+for filename, content in templates.items():
+    with open(os.path.join(base_dir, filename), "w") as f:
         f.write(content)
 
 with open(os.path.join(base_dir, "css/style.css"), "w") as f:
@@ -174,7 +104,18 @@ with open(os.path.join(base_dir, "js/terminal.js"), "w") as f:
 with open(os.path.join(base_dir, "js/glitch.js"), "w") as f:
     f.write(glitch_js)
 
-# Paketieren
+with open(os.path.join(base_dir, "js/archive.js"), "w") as f:
+    f.write(archive_js)
+
+# Beispielbilder und Audiodatei anlegen (Platzhalter)
+for i in range(1, 6):
+    with open(os.path.join(base_dir, f"img/doc{i}.png"), "wb") as f:
+        f.write(b"")
+
+with open(os.path.join(base_dir, "audio/unlock.mp3"), "wb") as f:
+    f.write(b"")
+
+# ZIP erstellen
 with ZipFile(base_dir + ".zip", "w") as zipf:
     for foldername, subfolders, filenames in os.walk(base_dir):
         for filename in filenames:
