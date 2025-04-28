@@ -1,0 +1,110 @@
+import os
+from zipfile import ZipFile
+
+base_dir = "obsidian_arg_site"
+pages = ["index.html", "terminal.html", "archive.html", "case.html", "contact.html"]
+subdirs = ["css", "js", "img"]
+
+os.makedirs(base_dir, exist_ok=True)
+for subdir in subdirs:
+    os.makedirs(os.path.join(base_dir, subdir), exist_ok=True)
+
+html_templates = {
+    "index.html": """<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<title>Project OBSIDIAN</title><link rel="stylesheet" href="css/style.css"/></head>
+<body class="glitch-bg">
+<div class="glitch-title">PROJECT: OBSIDIAN</div>
+<p class="intro-text">ACCESSING SECURE NETWORK... PLEASE WAIT</p>
+<a href="terminal.html" class="enter-link">[ ENTER TERMINAL ]</a>
+</body></html>
+""",
+    "terminal.html": """<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<title>Terminal Access</title><link rel="stylesheet" href="css/style.css"/></head>
+<body class="terminal-bg">
+<pre class="terminal-text">
+> Connecting to OBSIDIAN Core...
+> Decryption in progress...
+> WARNING: ANOMALY DETECTED
+:: [FILE 004] -- 'Subject-Delta moved at 03:41AM despite sedation. Footage corrupted.'
+</pre>
+<a href="archive.html" class="enter-link">[ VIEW ARCHIVE FILES ]</a>
+</body></html>
+""",
+    "archive.html": """<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<title>Archives</title><link rel="stylesheet" href="css/style.css"/></head>
+<body class="archive-bg">
+<h1>ARCHIVAL DOCUMENTS</h1>
+<div class="doc redacted">FILE: OBSIDIAN-07 - [REDACTED TEXT] - Disappearance timeline inconsistent with records.</div>
+<a href="case.html" class="enter-link">[ OPEN CASE FILE ]</a>
+</body></html>
+""",
+    "case.html": """<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<title>Case File</title><link rel="stylesheet" href="css/style.css"/></head>
+<body class="case-bg">
+<h1>SUBJECT: DELTA</h1>
+<p>Status: Escaped containment</p>
+<p>Profile: Heightened neural activity. Images cause system glitches. Observe with caution.</p>
+<a href="contact.html" class="enter-link">[ REPORT ANOMALY ]</a>
+</body></html>
+""",
+    "contact.html": """<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<title>Report</title><link rel="stylesheet" href="css/style.css"/></head>
+<body class="contact-bg">
+<h1>REPORT AN ANOMALY</h1>
+<form class="fake-form">
+  <input type="text" placeholder="Subject ID" />
+  <textarea placeholder="Details"></textarea>
+  <button type="submit">Send</button>
+</form>
+<a href="index.html" class="enter-link">[ RETURN TO START ]</a>
+</body></html>
+"""
+}
+
+css_content = """
+body {
+  background-color: black;
+  color: #00ffcc;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 2rem;
+}
+.glitch-title {
+  font-size: 2rem;
+  color: red;
+  animation: glitch 1s infinite;
+}
+.enter-link {
+  display: block;
+  margin-top: 2rem;
+  color: lime;
+  text-decoration: none;
+}
+@keyframes glitch {
+  0% { text-shadow: 2px 2px red; }
+  50% { text-shadow: -2px -2px blue; }
+  100% { text-shadow: 2px 2px red; }
+}
+.redacted {
+  background: black;
+  color: black;
+  text-shadow: 0 0 5px #fff;
+}
+"""
+
+for page, content in html_templates.items():
+    with open(os.path.join(base_dir, page), "w") as f:
+        f.write(content)
+
+with open(os.path.join(base_dir, "css/style.css"), "w") as f:
+    f.write(css_content)
+
+with ZipFile(base_dir + ".zip", "w") as zipf:
+    for foldername, subfolders, filenames in os.walk(base_dir):
+        for filename in filenames:
+            filepath = os.path.join(foldername, filename)
+            zipf.write(filepath, os.path.relpath(filepath, base_dir))
