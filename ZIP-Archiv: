@@ -1,0 +1,26 @@
+body {
+  background-color: black;
+  color: #00ffcc;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 2rem;
+}
+.glitch-title {
+  font-size: 2rem;
+  color: red;
+  animation: glitch 1s infinite;
+}
+.enter-link {
+  display: block;
+  margin-top: 2rem;
+  color: lime;
+  text-decoration: none;
+}
+@keyframes glitch {
+  0% { text-shadow: 2px 2px red; }
+  50% { text-shadow: -2px -2px blue; }
+  100% { text-shadow: 2px 2px red; }
+}
+.redacted {
+  background: black;
+  color: black;
+  text-shadow: 0 0 5px #fff;
