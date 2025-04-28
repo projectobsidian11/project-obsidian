@@ -121,3 +121,25 @@ with ZipFile(base_dir + ".zip", "w") as zipf:
         for filename in filenames:
             filepath = os.path.join(foldername, filename)
             zipf.write(filepath, os.path.relpath(filepath, base_dir))
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Archives</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/archive.js" defer></script>
+</head>
+<body class="archive-bg">
+<h1>ARCHIVAL DOCUMENTS</h1>
+<div class="archive-gallery">
+    <img src="img/doc1.png" class="doc-img" id="doc-1" alt="Document 1">
+    <img src="img/doc2.png" class="doc-img" id="doc-2" alt="Document 2">
+    <img src="img/doc3.png" class="doc-img" id="doc-3" alt="Document 3">
+    <img src="img/doc4.png" class="doc-img" id="doc-4" alt="Document 4">
+    <img src="img/doc5.png" class="doc-img" id="doc-5" alt="Document 5">
+</div>
+<p id="unlock-message" style="display:none;">Access Unlocked: <a href="obsidian_secret.html">[ ENTER SECURE FILES ]</a></p>
+<a href="case.html" class="enter-link">[ VIEW CASE FILE DELTA ]</a>
+</body>
+</html>
